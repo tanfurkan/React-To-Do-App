@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react'
+import AddTask from './AddTask'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-            To Do App
-      </header>
-    </div>
-  );
+class App extends Component {
+    render(){
+        return (
+            <div>
+                <h2>React-Firebase To Do App</h2>
+                <AddTask />
+            </div>
+        );
+    }
 }
-
 export default App;
