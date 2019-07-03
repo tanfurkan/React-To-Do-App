@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import AddTask from './AddTask'
+import TaskList from './TaskList'
 import {NotificationContainer} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
@@ -9,7 +10,8 @@ class App extends Component {
             <div>
                 <h2>React-Firebase To Do App</h2>
                 <AddTask />
-                <NotificationContainer/> 
+                <TaskList /> 
+                <NotificationContainer/>
             </div>
         );
     }

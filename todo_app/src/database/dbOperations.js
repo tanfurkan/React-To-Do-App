@@ -5,10 +5,9 @@ import {firebaseConfig} from './config'
 import { NotificationManager} from 'react-notifications';
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+export const db = firebase.database();
 
 export const addTasktoDatabase = (nameOfTask) => {
-    //moment(time).calendar()
     //moment(db_time_stamp).format('YYYY-MM-DD THH:mm:ss Z') //   2019-07-02 T11:57:16 +03:00  
 
     const time = moment().toISOString() // 2019-07-02T08:57:16.434Z

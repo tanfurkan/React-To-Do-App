@@ -23,6 +23,7 @@ h1, h2, h3 ,h4, h5 {
 button {
     margin-right: .5rem;
     margin-left: .5rem;
+    margin-top: .5rem;
 }
 
 table {
@@ -30,11 +31,22 @@ table {
 }
 th {
     text-align: center;
-    width: 30%;
 }
 td {
     padding: 10px;
 }
 .completed {
     text-decoration:line-through;
+}
+.Name {
+    width: 45%;
+}
+.Checkbox {
+    width: 13%;
+}
+.Buttons {
+    width: 20%; 
+}
+.Time {
+    width: 22%;
 }
