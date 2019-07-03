@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { addTasktoDatabase } from '../database/dbOperations'
 
 class AddTask extends Component {
     state = { inputText : '' }
@@ -14,7 +15,9 @@ class AddTask extends Component {
     }
 
     addTask = () => {
-        console.log('Add Task',this.state.inputText)
+        addTasktoDatabase(this.state.inputText);
+        this.setState({inputText : ''});
+        this.refs.taskInput.value = '';
     }
 
     render(){

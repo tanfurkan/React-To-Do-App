@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 import moment from 'moment'
 import {firebaseConfig} from './config'
+import { NotificationManager} from 'react-notifications';
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -19,10 +20,15 @@ export const addTasktoDatabase = (nameOfTask) => {
             isCompleted: false,
             time: time
         });
+
+        NotificationManager.success('Task Successfully added','', 3000);
         addLogtoDatabase(nameOfTask,'ADD',time)
+
     } else {
+
+        NotificationManager.error('Failed to Add the Task', 'Can not be Empty', 3000)
         addLogtoDatabase('NULL','Invalid Add Attempt',time)
-        alert("Task Description can not be empty.");
+      //  alert("Task Description can not be empty.");
     }
 
     dbRef.off();
@@ -34,7 +40,10 @@ export const deleteTaskfromDatabase = (taskID,nameOfTask) => {
     const dbRef = db.ref(); 
 
     dbRef.child('tasks').child(taskID).remove();
+
+    NotificationManager.warning('Task Successfully deleted','', 3000);    
     addLogtoDatabase(nameOfTask,'DELETE',time);
+
     dbRef.off();
 
 }
@@ -50,7 +59,9 @@ export const updateTaskName = (taskID,oldTaskName,newTaskName) => {
         time : time
     });
 
+    NotificationManager.info('Task Successfully updated','', 3000);
     addLogtoDatabase(log_text,'EDIT',time);
+
     dbRef.off();
 
 }
@@ -65,8 +76,10 @@ export const updateCheckBox = (taskID,nameOfTask,completed) => {
         isCompleted : completed,
         time : time
     });
-
+    
+    NotificationManager.info('Task Successfully updated','', 3000);
     addLogtoDatabase(nameOfTask,log_text,time);
+
     dbRef.off();
 
 }
