@@ -1,11 +1,13 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
+import 'firebase/auth'
 import moment from 'moment'
 import {firebaseConfig} from './config'
 import { NotificationManager} from 'react-notifications';
 
 firebase.initializeApp(firebaseConfig);
 export const db = firebase.database();
+export const auth = firebase.auth();
 const MAX_INPUT_LENGTH = 150;
 
 export const addTasktoDatabase = (nameOfTask) => {
@@ -102,8 +104,9 @@ export const updateCheckBox = (taskID,nameOfTask,completed) => {
 export const addLogtoDatabase = (nameOfTask,typeOfAction,time_stamp) => {
 
     const dbRef = db.ref(); 
+    const currentUserID = auth.currentUser.uid;
 
-    dbRef.child('logs').push({
+    dbRef.child('logs').child(currentUserID).push({
         task_name: nameOfTask,
         action : typeOfAction,
         time : time_stamp
