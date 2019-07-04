@@ -6,6 +6,7 @@ import { NotificationManager} from 'react-notifications';
 
 firebase.initializeApp(firebaseConfig);
 export const db = firebase.database();
+const MAX_INPUT_LENGTH = 150;
 
 export const addTasktoDatabase = (nameOfTask) => {
     //moment(db_time_stamp).format('YYYY-MM-DD THH:mm:ss Z') //   2019-07-02 T11:57:16 +03:00  
@@ -13,7 +14,13 @@ export const addTasktoDatabase = (nameOfTask) => {
     const time = moment().toISOString() // 2019-07-02T08:57:16.434Z
     const dbRef = db.ref(); 
 
-    if(nameOfTask.length > 0){
+    if(nameOfTask.length < 1){
+
+        NotificationManager.error('Failed to Add the Task', 'Can not be Empty', 3000)
+        addLogtoDatabase('NULL','Invalid Add Attempt',time)
+
+    } else if(nameOfTask.length < MAX_INPUT_LENGTH){
+
         dbRef.child('tasks').push({
             task_name: nameOfTask,
             isCompleted: false,
@@ -24,10 +31,9 @@ export const addTasktoDatabase = (nameOfTask) => {
         addLogtoDatabase(nameOfTask,'ADD',time)
 
     } else {
+        
+        NotificationManager.error('Task name is too long.','MAX:'+MAX_INPUT_LENGTH,3000)
 
-        NotificationManager.error('Failed to Add the Task', 'Can not be Empty', 3000)
-        addLogtoDatabase('NULL','Invalid Add Attempt',time)
-      //  alert("Task Description can not be empty.");
     }
 
     dbRef.off();
@@ -53,13 +59,22 @@ export const updateTaskName = (taskID,oldTaskName,newTaskName) => {
     const time = moment().toISOString(); // 2019-07-02T08:57:16.434Z
     const dbRef = db.ref(); 
 
-    dbRef.child('tasks').child(taskID).update({
-        task_name: newTaskName,
-        time : time
-    });
+    if(newTaskName.length < 1){
+        NotificationManager.error('Task name is not change.','',3000)
+    }
+    else if(newTaskName.length < MAX_INPUT_LENGTH){
+        dbRef.child('tasks').child(taskID).update({
+            task_name: newTaskName,
+            time : time
+        });
+    
+        NotificationManager.info('Task Successfully updated','', 3000);
+        addLogtoDatabase(log_text,'EDIT',time);
+    }
+    else{
+        NotificationManager.error('Task name is too long.','MAX:'+MAX_INPUT_LENGTH,3000)
+    }
 
-    NotificationManager.info('Task Successfully updated','', 3000);
-    addLogtoDatabase(log_text,'EDIT',time);
 
     dbRef.off();
 

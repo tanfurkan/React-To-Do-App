@@ -4,6 +4,10 @@ import { addTasktoDatabase } from '../database/dbOperations'
 class AddTask extends Component {
     state = { inputText : '' }
 
+    shouldComponentUpdate(newProps) {
+        return this.props.target !== newProps.target;
+    }
+
     onInputChange = (event) => {
         this.setState({ inputText : event.target.value })
     }
