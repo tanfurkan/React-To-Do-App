@@ -17,6 +17,7 @@ body {
 }
 
 h1, h2, h3 ,h4, h5 {
+    text-align: center;
     font-family: 'Economica';
 }
 
@@ -49,4 +50,10 @@ td {
 }
 .Time {
     width: 22%;
+}
+.log_task {
+    width: 45%;
+}
+.log_time {
+    width: 25%;
 }

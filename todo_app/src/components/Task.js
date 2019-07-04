@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import moment from 'moment'
-// eslint-disable-next-line no-unused-vars
 import { deleteTaskfromDatabase , updateTaskName , updateCheckBox } from '../database/dbOperations'
 
 class Task extends Component  {
@@ -46,7 +45,6 @@ class Task extends Component  {
 
 	render(){
         const { id , task_name, isCompleted, time} = this.props.task;
-        console.log(task_name,'rendered')
            
         return(
 			<tr key={id}>
@@ -65,7 +63,7 @@ class Task extends Component  {
 				</td>
 				<td className='Checkbox'><input type="checkbox" id={id} checked={isCompleted} onChange={this.checkChange}/></td>
 				<td className='Buttons'>
-					<button className="save-button" onClick={  () => { if (window.confirm('Are you sure you wish to change this task?'))  this.saveTask() } } hidden={!this.state.editMode} > Save </button>
+					<button className="save-button" onClick={  () => { (window.confirm('Are you sure you wish to change this task?')) ?  this.saveTask() : this.setState({editMode:false}) } } hidden={!this.state.editMode} > Save </button>
 					<button className="edit-button" onClick={ this.editTask } hidden={this.state.editMode} > Edit </button>
 					<button className="delete-button" onClick={ () => { if (window.confirm('Are you sure you wish to delete this task?'))  this.deleteTask() } } > Delete </button>
 				</td>
