@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import moment from 'moment'
+import React, {Component} from 'react';
+import moment from 'moment';
 
 class Log extends Component {
     shouldComponentUpdate(newProps) {
@@ -7,7 +7,7 @@ class Log extends Component {
     }
 
 	render(){
-        const { id, task_name, action, time} = this.props.log
+        const { id, task_name, action, time} = this.props.log;
 
         return(
             <tr key={id}>

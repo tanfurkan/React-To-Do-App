@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import moment from 'moment'
-import { deleteTaskfromDatabase , updateTaskName , updateCheckBox } from '../database/dbOperations'
+import React, { Component } from 'react';
+import moment from 'moment';
+import { deleteTaskfromDatabase , updateTaskName , updateCheckBox } from '../database/dbOperations';
 
 class Task extends Component  {
     state = { edited_Task : '', editMode:false, isCompleted:this.props.task.isCompleted}
@@ -23,24 +23,24 @@ class Task extends Component  {
     }
 
 	editTask = () => {
-		this.setState({editMode:true})
+		this.setState({editMode:true});
 	}
 	
 	saveTask = () => {
         const { id , task_name} = this.props.task;
         updateTaskName(id,task_name,this.state.edited_Task);
-        this.setState({editMode:false})
+        this.setState({editMode:false});
 	}
 
 	deleteTask = () => {
         const { id , task_name } = this.props.task;
-        deleteTaskfromDatabase(id,task_name)
+        deleteTaskfromDatabase(id,task_name);
 	}
 	
 	checkChange = () => {
         const { id , task_name, isCompleted} = this.props.task;
-        updateCheckBox(id,task_name,!isCompleted)
-        this.setState({isCompleted : !isCompleted}) 
+        updateCheckBox(id,task_name,!isCompleted);
+        this.setState({isCompleted : !isCompleted}); 
     }
 
 	render(){
@@ -63,9 +63,9 @@ class Task extends Component  {
 				</td>
 				<td className='Checkbox'><input type="checkbox" id={id} checked={isCompleted} onChange={this.checkChange}/></td>
 				<td className='Buttons'>
-					<button className="save-button" onClick={  () => { (window.confirm('Are you sure you wish to change this task?')) ?  this.saveTask() : this.setState({editMode:false}) } } hidden={!this.state.editMode} > Save </button>
+					<button className="save-button" onClick={  () => { (window.confirm('Are you sure you wish to change this task?')) ?  this.saveTask() : this.setState({editMode:false}); } } hidden={!this.state.editMode} > Save </button>
 					<button className="edit-button" onClick={ this.editTask } hidden={this.state.editMode} > Edit </button>
-					<button className="delete-button" onClick={ () => { if (window.confirm('Are you sure you wish to delete this task?'))  this.deleteTask() } } > Delete </button>
+					<button className="delete-button" onClick={ () => { if (window.confirm('Are you sure you wish to delete this task?'))  this.deleteTask(); } } > Delete </button>
 				</td>
 				<td className='Time'>{moment(time).calendar()}</td>
 			</tr>

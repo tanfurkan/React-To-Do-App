@@ -1,37 +1,36 @@
-import React, { Component } from 'react'
-import AddTask from './AddTask'
-import TaskList from './TaskList'
-import LogList from './LogList'
+import React, { Component } from 'react';
+import AddTask from './AddTask';
+import TaskList from './TaskList';
+import LogList from './LogList';
 import {NotificationContainer} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import {auth} from '../database/dbOperations'
+import {auth} from '../database/dbOperations';
 
 class App extends Component {
-    state = { userReady : false }
 
     componentWillMount(){
         auth.signInAnonymously()
         .then( () => {
-            this.setState({userReady:true})
-            console.log('Logged in as Anonymous!')
-            console.log('Your ID:',auth.currentUser.uid)
+            this.setState({userReady:true});
+            console.log('Logged in as Anonymous!');
+            console.log('Your ID:',auth.currentUser.uid);
         }).catch( error => {
             console.log(error.code);
             console.log(error.message);
         });
 
         auth.onAuthStateChanged( () => {
-            console.log('AuthState has changed.')
-        })
+            console.log('AuthState has changed.');
+        });
 
         auth.onIdTokenChanged( () => {
-            console.log('IdToken has changed.')
-        })
+            console.log('IdToken has changed.');
+        });
     }
 
     componentWillUnmount(){
-        console.log(auth.signOutAnonymously())
-        console.log('Signed Out')
+        console.log(auth.signOutAnonymously());
+        console.log('Signed Out');
     }
 
     render(){
@@ -40,7 +39,7 @@ class App extends Component {
                 <h2>React-Firebase To Do App</h2>
                 <AddTask />
                 <TaskList /> 
-                {this.state.userReady ? <LogList /> : ''}
+                <LogList />
                 <NotificationContainer/>
             </div>
         );

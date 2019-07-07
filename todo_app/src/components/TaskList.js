@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import Task from './Task'
-import {db} from '../database/dbOperations'
+import React, { Component } from 'react';
+import Task from './Task';
+import {db} from '../database/dbOperations';
 
 class TaskList extends Component {
     state = { ListofTasks : [], dbTaskRef : db.ref().child('tasks') };
@@ -12,17 +12,17 @@ class TaskList extends Component {
             let ListofTasks = [];
             if(allTasks){
                 snap.forEach(child => {
-                    let task = { id: child.key, task_name: child.val().task_name, isCompleted: child.val().isCompleted, time: child.val().time}    
+                    let task = { id: child.key, task_name: child.val().task_name, isCompleted: child.val().isCompleted, time: child.val().time};    
                     ListofTasks.push(task);   
-                  }) 
+                  }); 
             }
-            this.setState({ListofTasks})
-        })
+            this.setState({ListofTasks});
+        });
 
     }
 
     componentWillUnmount(){
-        this.state.dbTaskRef.off()
+        this.state.dbTaskRef.off();
     }
 
 	render(){
@@ -53,7 +53,7 @@ class TaskList extends Component {
 					</tbody>
 				</table> 
 			</div>
-		)
+		);
 	}
 }
 

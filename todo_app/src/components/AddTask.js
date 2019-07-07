@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { addTasktoDatabase } from '../database/dbOperations'
+import React, { Component } from 'react';
+import { addTasktoDatabase } from '../database/dbOperations';
+import { Button } from 'react-bootstrap';
 
 class AddTask extends Component {
-    state = { inputText : '' }
-
-    shouldComponentUpdate(newProps) {
-        return this.props.target !== newProps.target;
+    constructor(props) {
+        super(props);
+        this.state= { inputText : '' };
     }
-
+    
     onInputChange = (event) => {
-        this.setState({ inputText : event.target.value })
+        this.setState({ inputText : event.target.value });
     }
 
     handleKeyPress = event => {
@@ -35,7 +35,7 @@ class AddTask extends Component {
                     onKeyPress = { this.handleKeyPress }
                     ref = 'taskInput'
                 />
-                <button onClick = { this.addTask }  className = "addTask-button" > Add Task </button>             
+                <Button size="lg" variant="success" onClick = { this.addTask }  className = "addTask-button" > Add Task </Button>             
             </div>
         );
     }
