@@ -3,11 +3,13 @@ import moment from 'moment';
 import { deleteTaskfromDatabase , updateTaskName , updateCheckBox } from '../database/dbOperations';
 
 class Task extends Component  {
-    state = { edited_Task : '', editMode:false, isCompleted:this.props.task.isCompleted}
+    state = { edited_Task : this.props.task.task_name, editMode:false, isCompleted:this.props.task.isCompleted}
     
     
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return (this.props.task !== nextProps.task) || this.state.editMode !== nextState.editMode;
+        return     this.props.task !== nextProps.task 
+                || this.state.editMode !== nextState.editMode 
+                || this.state.edited_Task !== nextState.edited_Task;
     }
 
     updateTaskText = event => {
@@ -21,7 +23,6 @@ class Task extends Component  {
         else if(event.key === 'Esc' || event.key ==='Escape'){
             this.setState({editMode:false});
         }
-        event.preventDefault();
     }
 
 	editTask = () => {
@@ -31,9 +32,9 @@ class Task extends Component  {
 	saveTask = () => {
         const { id , task_name} = this.props.task;
         if(task_name !== this.state.edited_Task){
-            updateTaskName(id,task_name,this.state.edited_Task);
+            updateTaskName(id,task_name,this.state.edited_Task.trim());
         }
-        this.setState({editMode:false});
+        this.setState({editMode:false, edited_Task: this.state.edited_Task.trim()});
 	}
 
 	deleteTask = () => {
@@ -56,14 +57,12 @@ class Task extends Component  {
 					<label id={id} className = {isCompleted ? "completed" : "notCompleted"} hidden={this.state.editMode}> {task_name}  </label> 
 					<input 
 						id={id} 
-						ref='editedText'
 						type="text" 
 						hidden={!this.state.editMode} 
-						placeholder={task_name} 
-						className = "editTask-text"   
-						onChange = { this.updateTaskText }
-                        onKeyPress = { this.handleKeyPress }
-                        onKeyDown = { this.handleKeyPress }
+                        className = "editTask-text"
+                        value = {this.state.edited_Task}   
+                        onChange = { this.updateTaskText }
+                        onKeyUp = { this.handleKeyPress }
 					/> 
 				</td>
 				<td className='Checkbox'><input type="checkbox" id={id} checked={isCompleted} onChange={this.checkChange}/></td>

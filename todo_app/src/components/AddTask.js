@@ -19,9 +19,8 @@ class AddTask extends Component {
     }
 
     addTask = () => {
-        addTasktoDatabase(this.state.inputText);
+        addTasktoDatabase(this.state.inputText.trim());
         this.setState({inputText : ''});
-        this.refs.taskInput.value = '';
     }
 
     render(){
@@ -33,7 +32,7 @@ class AddTask extends Component {
                     className = "addTask-text"
                     onChange = { this.onInputChange }
                     onKeyPress = { this.handleKeyPress }
-                    ref = 'taskInput'
+                    value = { this.state.inputText }
                 />
                 <Button size="lg" variant="success" onClick = { this.addTask }  className = "addTask-button" > Add Task </Button>             
             </div>
