@@ -115,3 +115,14 @@ export const addLogtoDatabase = (nameOfTask,typeOfAction,time_stamp) => {
     dbRef.off();
 
 };
+
+export const getDatabaseRef = (childList) => {
+    let location = '';
+    childList.forEach(child => {
+        location = location + '/' + child;
+    });
+
+    const dbRef = db.ref(location);
+
+    return dbRef;
+};

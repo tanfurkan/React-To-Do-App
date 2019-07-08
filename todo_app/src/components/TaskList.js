@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import Task from './Task';
-import {db} from '../database/dbOperations';
+import {getDatabaseRef} from '../database/dbOperations';
 
 class TaskList extends Component {
-    state = { ListofTasks : [], dbTaskRef : db.ref().child('tasks') };
+    constructor(props){
+        super(props);
+        this.state = { ListofTasks : [] };
+        this.dbTaskRef = getDatabaseRef(['tasks']); 
+    }
 
     componentDidMount(){
         
-        this.state.dbTaskRef.on('value', snap => {
+        this.dbTaskRef.on('value', snap => {
             const allTasks = snap.val();
             let ListofTasks = [];
             if(allTasks){
@@ -22,7 +26,9 @@ class TaskList extends Component {
     }
 
     componentWillUnmount(){
-        this.state.dbTaskRef.off();
+        if(this.dbTaskRef){
+            this.dbTaskRef.off();
+        }
     }
 
 	render(){

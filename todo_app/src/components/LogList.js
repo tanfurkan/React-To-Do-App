@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import Log from './Log';
-import { db, auth} from '../database/dbOperations';
+import {auth, getDatabaseRef} from '../database/dbOperations';
 
 
 class LogList extends Component {
     constructor(props){
         super(props);
         this.state = { ListofLogs : [], userLogin : false }; 
-        this.dbLogRef = db.ref();
+        this.dbRef = null;
     }
     
     componentDidMount(){
         auth.onAuthStateChanged( user => {
             if(user){
                 this.setState( { userLogin : true });
-                const userLog = this.dbLogRef.child('logs').child(auth.currentUser.uid);
-                userLog.on('value', snap => {
-                    const allLogs = snap.val();
-                    let ListofLogs = [];
-                    if(allLogs){
-                        snap.forEach(child => {
-                            let log = { id: child.key, task_name: child.val().task_name, action: child.val().action, time:child.val().time};
-                            ListofLogs.unshift(log);
-                          }); 
-                    }
+                this.dbRef = getDatabaseRef(['logs',auth.currentUser.uid]);
+                this.dbRef.on('child_added', snap => {
+                    let log = { id: snap.key, task_name: snap.val().task_name, action: snap.val().action, time:snap.val().time};
+                    let ListofLogs = this.state.ListofLogs;
+                    ListofLogs.unshift(log);
                     this.setState({ListofLogs});
                 });
             }
@@ -31,7 +26,9 @@ class LogList extends Component {
     }
 
     componentWillUnmount(){
-        this.state.dbLogRef.off();
+        if(this.dbRef){
+            this.dbRef.off();
+        }
     }
 
     render(){
