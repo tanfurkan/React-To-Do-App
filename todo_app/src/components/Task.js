@@ -6,10 +6,8 @@ class Task extends Component  {
     state = { edited_Task : '', editMode:false, isCompleted:this.props.task.isCompleted}
     
     
-    shouldComponentUpdate(newProps,nextState) {
-        const checkbox = this.props.task.isCompleted !== nextState.isCompleted ;
-        const edit_save = this.state.editMode !== nextState.editMode ;
-        return checkbox || edit_save ;
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return (this.props.task !== nextProps.task) || this.state.editMode !== nextState.editMode;
     }
 
     updateTaskText = event => {
@@ -28,7 +26,9 @@ class Task extends Component  {
 	
 	saveTask = () => {
         const { id , task_name} = this.props.task;
-        updateTaskName(id,task_name,this.state.edited_Task);
+        if(task_name !== this.state.edited_Task){
+            updateTaskName(id,task_name,this.state.edited_Task);
+        }
         this.setState({editMode:false});
 	}
 

@@ -11,16 +11,33 @@ class TaskList extends Component {
 
     componentDidMount(){
         
-        this.dbTaskRef.on('value', snap => {
-            const allTasks = snap.val();
-            let ListofTasks = [];
-            if(allTasks){
-                snap.forEach(child => {
-                    let task = { id: child.key, task_name: child.val().task_name, isCompleted: child.val().isCompleted, time: child.val().time};    
-                    ListofTasks.push(task);   
-                  }); 
-            }
+        this.dbTaskRef.on('child_added', snap => {
+            let task = { id: snap.key, task_name: snap.val().task_name, isCompleted: snap.val().isCompleted, time: snap.val().time};
+            let ListofTasks = this.state.ListofTasks;
+            ListofTasks.push(task);
             this.setState({ListofTasks});
+        });
+
+        this.dbTaskRef.on('child_removed', snap => {
+            let ListofTasks = this.state.ListofTasks;
+            for(var i=0; i < ListofTasks.length; i++) {
+              if(ListofTasks[i].id === snap.key){
+                ListofTasks.splice(i, 1);
+              }
+              this.setState({ ListofTasks });
+            }
+        });
+
+        this.dbTaskRef.on("child_changed", snap => {
+            let ListofTasks = this.state.ListofTasks;
+            for(var i=0; i < ListofTasks.length; i++) {
+                if(ListofTasks[i].id === snap.key){
+                    let task = { id: snap.key, task_name: snap.val().task_name, isCompleted: snap.val().isCompleted, time: snap.val().time};
+                    ListofTasks[i]= task;
+                    this.setState({ListofTasks});
+                    break;
+                }
+            }
         });
 
     }
