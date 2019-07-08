@@ -15,9 +15,13 @@ class Task extends Component  {
     }
     
     handleKeyPress = event => {
-        if(event.key === "Enter"){
+        if(event.key === 'Enter'){
 			this.saveTask();
-		}
+        }
+        else if(event.key === 'Esc' || event.key ==='Escape'){
+            this.setState({editMode:false});
+        }
+        event.preventDefault();
     }
 
 	editTask = () => {
@@ -58,7 +62,8 @@ class Task extends Component  {
 						placeholder={task_name} 
 						className = "editTask-text"   
 						onChange = { this.updateTaskText }
-						onKeyPress = { this.handleKeyPress }
+                        onKeyPress = { this.handleKeyPress }
+                        onKeyDown = { this.handleKeyPress }
 					/> 
 				</td>
 				<td className='Checkbox'><input type="checkbox" id={id} checked={isCompleted} onChange={this.checkChange}/></td>
