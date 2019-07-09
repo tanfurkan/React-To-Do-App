@@ -14,7 +14,11 @@ class LogList extends Component {
         auth.onAuthStateChanged( user => {
             if(user){
                 this.setState( { userLogin : true });
-                this.dbRef = getDatabaseRef(['logs',auth.currentUser.uid]);
+                try{
+                    this.dbRef = getDatabaseRef(['logs',auth.currentUser.uid]);
+                }catch(error){
+                    console.log(error.message);
+                }
                 this.dbRef.on('child_added', snap => {
                     let log = { id: snap.key, task_name: snap.val().task_name, action: snap.val().action, time:snap.val().time};
                     let ListofLogs = this.state.ListofLogs;

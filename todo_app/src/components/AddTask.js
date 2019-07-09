@@ -13,14 +13,20 @@ class AddTask extends Component {
     }
 
     handleKeyPress = event => {
-        if(event.key === "Enter"){
+        if(event.key === 'Enter'){
             this.addTask();
         }
     }
 
     addTask = () => {
-        addTasktoDatabase(this.state.inputText.trim());
-        this.setState({inputText : ''});
+        addTasktoDatabase(this.state.inputText.trim())
+        .then( () => {
+            this.setState({inputText : ''});
+        })
+        .catch(error => {
+            console.log(error);
+        });
+        
     }
 
     render(){
@@ -28,13 +34,13 @@ class AddTask extends Component {
             <div>
                 <input 
                     type='text'
-                    placeholder = "Add Task to the List"
-                    className = "addTask-text"
+                    placeholder = 'Add Task to the List'
+                    className = 'addTask-text'
                     onChange = { this.onInputChange }
                     onKeyPress = { this.handleKeyPress }
                     value = { this.state.inputText }
                 />
-                <Button size="lg" variant="success" onClick = { this.addTask }  className = "addTask-button" > Add Task </Button>             
+                <Button size='lg' variant='success' onClick = { this.addTask }  className = 'addTask-button' > Add Task </Button>             
             </div>
         );
     }

@@ -6,7 +6,11 @@ class TaskList extends Component {
     constructor(props){
         super(props);
         this.state = { ListofTasks : [] };
-        this.dbTaskRef = getDatabaseRef(['tasks']); 
+        try{
+            this.dbTaskRef = getDatabaseRef(['tasks']); 
+        }catch(error){
+            console.log(error.message);
+        }
     }
 
     componentDidMount(){
@@ -28,7 +32,7 @@ class TaskList extends Component {
             }
         });
 
-        this.dbTaskRef.on("child_changed", snap => {
+        this.dbTaskRef.on('child_changed', snap => {
             let ListofTasks = this.state.ListofTasks;
             for(var i=0; i < ListofTasks.length; i++) {
                 if(ListofTasks[i].id === snap.key){
