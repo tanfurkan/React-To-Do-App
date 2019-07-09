@@ -5,7 +5,7 @@ import { deleteTaskfromDatabase , updateTaskName , updateCheckBox } from '../dat
 class Task extends Component  {
     state = { edited_Task : this.props.task.task_name, editMode:false, isCompleted:this.props.task.isCompleted}
     
-    
+
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return     this.props.task !== nextProps.task 
                 || this.state.editMode !== nextState.editMode 
@@ -23,6 +23,7 @@ class Task extends Component  {
         else if(event.key === 'Esc' || event.key ==='Escape'){
             this.setState({editMode:false});
         }
+        event.preventDefault();
     }
 
 	editTask = () => {
@@ -50,7 +51,12 @@ class Task extends Component  {
 
 	render(){
         const { id , task_name, isCompleted, time} = this.props.task;
-           
+        if(this.state.editMode){
+            window.addEventListener('keyup', this.handleKeyPress);
+        }   
+        else{
+            window.removeEventListener('keyup', this.handleKeyPress);
+        } 
         return(
 			<tr key={id}>
 				<td className='Name'>
@@ -62,7 +68,6 @@ class Task extends Component  {
                         className = "editTask-text"
                         value = {this.state.edited_Task}   
                         onChange = { this.updateTaskText }
-                        onKeyUp = { this.handleKeyPress }
 					/> 
 				</td>
 				<td className='Checkbox'><input type="checkbox" id={id} checked={isCompleted} onChange={this.checkChange}/></td>
