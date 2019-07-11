@@ -16,15 +16,16 @@ class LogList extends Component {
                 this.setState( { userLogin : true });
                 try{
                     this.dbRef = getDatabaseRef(['logs',auth.currentUser.uid]);
+                    this.dbRef.on('child_added', snap => {
+                        let log = { id: snap.key, task_name: snap.val().task_name, action: snap.val().action, time:snap.val().time};
+                        let ListofLogs = this.state.ListofLogs;
+                        ListofLogs.unshift(log);
+                        this.setState({ListofLogs});
+                    });
                 }catch(error){
                     console.log(error.message);
                 }
-                this.dbRef.on('child_added', snap => {
-                    let log = { id: snap.key, task_name: snap.val().task_name, action: snap.val().action, time:snap.val().time};
-                    let ListofLogs = this.state.ListofLogs;
-                    ListofLogs.unshift(log);
-                    this.setState({ListofLogs});
-                });
+
             }
         });
     }
